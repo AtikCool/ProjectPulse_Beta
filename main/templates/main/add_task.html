@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+{% block title %}
+Adding Tasks for {{ project.name }}
+
+{% endblock %}
+{% block con %}
+<div class="max-w-md mx-auto bg-white rounded p-8 shadow-md">
+    <form enctype="multipart/form-data" action="#" method="POST">
+    <h2 class="text-2xl font-semibold mb-4">Create Project</h2>
+    <div class="max-w-md mx-auto bg-white border rounded p-4 ">
+    <div class="bg-gray-200 border-b p-3">
+            <h4 class="text-lg font-semibold">Project Name</h4>
+      {{ form.project }}
+        </div>
+    <!-- Не добавляем заголовок -->
+
+
+    </div>
+
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="title" class="block text-gray-700 font-semibold mb-2">Title:</label>
+                {{ form.name  }}
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-gray-700 font-semibold mb-2">Description:</label>
+                {{ form.description }}
+            </div>
+            <div class="mb-4">
+                <label for="priority" class="block text-gray-700 font-semibold mb-2">Priority:</label>
+                <!-- Применение стилей Tailwind к input[type="date"] -->
+                {{ form.priority }}
+            </div>
+
+            <div class="mb-4">
+                <label for="date" class="block text-gray-700 font-semibold mb-2">Deadline date:</label>
+                <!-- Применение стилей Tailwind к input[type="date"] -->
+                {{ form.deadline }}
+            </div>
+
+
+
+
+<div class="mb-4">
+                <label for="date" class="block text-gray-700 font-semibold mb-2">Assigned To</label>
+                <!-- Применение стилей Tailwind к input[type="date"] -->
+               {{ form.user }}
+            </div>
+<div class='mb-5 border-b p-3'>
+ <div id="inputContainer">
+        <!-- Initial input field -->
+        <div class="flex items-center mb-2">
+            <input type="text" name="input[]" class="w-full py-2 px-3 border border-gray-300 rounded-md" placeholder="Enter something">
+        </div>
+    </div>
+    <!-- Button to add new input -->
+    <button id="addInputBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Add point
+    </button>
+
+    <script>
+        document.getElementById('addInputBtn').addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем стандартное действие кнопки
+            // Create a new input element
+            var newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.name = 'input[]';
+            newInput.className = 'w-full py-2 px-3 border border-gray-300 rounded-md mb-2';
+
+            // Append the new input element to the container
+            document.getElementById('inputContainer').appendChild(newInput);
+        });
+    </script>
+</div>
+        <div class="flex justify-end">
+            <a href="{{ project.get_absolute_url }}"><button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Create</button></a>
+            </div>
+        </form>
+
+</div>
+{% endblock %}

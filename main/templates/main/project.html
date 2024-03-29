@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+{% block title %}
+Project {{ project.name }}
+{% endblock %}
+{% block con %}
+<br>
+<br>
+<br>
+<div class="max-w-3xl mx-auto">
+        <!-- Заголовок -->
+
+<img class="rounded-full w-32 h-32" src="{{ project.icon.url }}" alt="image description">
+
+    <h1 class="text-3xl font-semibold mb-4">Tasks in {{ project.name }}</h1>
+
+        <!-- Задачи для проекта 1 -->
+        <div class="bg-white shadow-md rounded-md p-4">
+            <form method="post">
+            {% csrf_token %}
+                <h2 class="text-xl font-semibold mb-2">{{project.name }}</h2>
+            <!-- Сетка задач -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Задача 1 -->
+
+                {% for el in tasks %}
+
+                <div class="border p-4 rounded-md">
+                    <h3 class="font-semibold text-lg mb-2">{{ el.name }}</h3>
+                    <p class="text-sm text-gray-500">{{ el.description }}</p>
+                    <p class="text-sm text-gray-500">Deadline: {{ el.deadline }}</p>
+                    <div class="mb-4">
+            <label for="status{{ el.id }}" class="block mb-1"> {{ el.name }}'s status:</label>
+            <select name="status{{ el.id }}"  id="status{{ el.id }}" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                {% if el.value == "in progress" %}
+                <option  selected='selected' value="in progress">В процессе</option>
+                <option value="ended">Завершено</option>
+                <option value="interruption">Прерывание</option>
+               {% elif el.value == 'ended' %}
+                <option   value="in progress">В процессе</option>
+                <option selected='selected' value="ended">Завершено</option>
+                <option value="interruption">Прерывание</option>
+                {% else %}
+                <option   value="in progress">В процессе</option>
+                <option value="ended">Завершено</option>
+                <option selected='selected' value="interruption">Прерывание</option>
+                {% endif %}
+
+            </select>
+        </div>
+                    <p class="text-sm text-gray-500">Assigned To: <b>{{ el.user }}</b></p>
+                    <p class="text-sm text-gray-500">Priority: <span class="text-red-500">High</span></p>
+                    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><a href="{{ el.get_absolute_url }}">Click</a></button>
+                </div>
+
+        {% endfor %}
+
+
+            </div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Обновить</button>
+        </form>
+        </div>
+
+</div>
+
+{% endblock %}

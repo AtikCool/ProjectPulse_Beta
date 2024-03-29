@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% block title %}
+{{ task.name }}
+{% endblock %}
+{% block con %}
+<br>
+<br>
+<br>
+
+
+<ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+    {% for el in tasks %}
+    <li class="me-2">
+        <a href="{% url 'main:task' el.id %}" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">{{ el.name }}</a>
+    </li>
+    {% endfor %}
+
+</ul>
+
+<div id="panel-project1" class="tab-panel">
+                <div class="bg-white border-b shadow-md rounded-md p-4">
+                    <h2 class="text-xl font-semibold mb-2">{{ task.name }}</h2>
+
+                    {% if points %}
+                    <div class="container">
+    <div class="custom-padding-scale">
+      <div class="indicator" style="width: {{ procent_of_completed }}%;"></div> <!-- Индикатор заполнения на 30% -->
+    </div>
+  </div>
+
+                    <form method="POST">
+                    <ul>
+                    {% csrf_token %}
+                        {% for el in points%}
+                      <li class="flex items-center justify-between py-2 border-b">
+                            <div>
+
+                                <p class="text-sm text-gray-500">{{ el.description }}</p>
+                            </div>
+                        <div>
+                          <label for="checkbox{{ el.id }}" class="text-sm text-gray-500">Completed:</label>
+                           {% if el.status %}
+                            <input id="checkbox{{ el.id }}" value="{{ el.id }}" checked="checked" name='checkbox[]' type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        {% else %}
+                             <input id="checkbox{{ el.id }}" value="{{ el.id }}" name='checkbox[]' type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        {% endif %}
+                        </div>
+
+                      </li>
+                      {% endfor %}
+                      <!-- Добавьте другие задачи здесь -->
+                    </ul>
+
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+  Save
+</button>
+               </form>
+                    {% else%}
+                    <h2 class="text-xl font-semibold mb-2">There are no pionts there </h2>
+                {% endif %}
+                </div>
+            </div>
+<style>
+  .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 10vh; /* Высота контейнера равна высоте видимой области страницы */
+    }
+
+    .custom-padding-scale {
+      width: 500px; /* Ширина шкалы наполнения */
+      height: 30px; /* Высота шкалы наполнения */
+      background-color: #B4B0AF; /* Цвет фона */
+      border-radius: 15px; /* Радиус скругления */
+      overflow: hidden; /* Скрытие контента, выходящего за пределы */
+      border: 2px solid #A9A9A9; /* Граница синего цвета */
+    }
+
+    .custom-padding-scale .indicator {
+      height: 100%;
+      background-color: #0D6EF7; /* Цвет заполнения */
+    }
+  </style>
+
+{% endblock %}
